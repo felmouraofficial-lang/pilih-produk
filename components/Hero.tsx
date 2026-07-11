@@ -20,7 +20,7 @@ export default function Hero({ site, products, query, onQueryChange }: HeroProps
       <div className="mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.88fr] lg:px-8 lg:py-16">
         <div className="animate-fade-up">
           <p className="text-sm font-black uppercase text-[#FF6A00]">
-            Affiliate Shopee Discovery
+            Affiliate Product Discovery
           </p>
           <h1 className="mt-5 max-w-3xl text-5xl font-black leading-[1.02] text-neutral-950 sm:text-6xl lg:text-7xl">
             {site.heroTitle}

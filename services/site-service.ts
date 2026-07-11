@@ -4,16 +4,16 @@ import type { SiteContent } from "@/types/product";
 const siteId = "site";
 
 const defaults: SiteContent = {
-  websiteName: "Shopee Pilihan",
+  websiteName: "Etalase Pilihan",
   websiteDescription:
-    "Website rekomendasi produk affiliate Shopee dengan kurasi promo dan produk pilihan.",
+    "Website rekomendasi produk pilihan dengan kurasi promo dan link belanja terpercaya.",
   logo: "",
   favicon: "",
   footerText:
-    "Harga, stok, voucher, dan promo mengikuti informasi terbaru di halaman Shopee tujuan.",
-  metaTitle: "Shopee Pilihan | Rekomendasi Produk Premium dan Promo Shopee",
+    "Harga, stok, voucher, dan promo mengikuti informasi terbaru di halaman marketplace tujuan.",
+  metaTitle: "Etalase Pilihan | Rekomendasi Produk Terbaik dan Harga Terjangkau",
   metaDescription:
-    "Landing page rekomendasi produk affiliate Shopee untuk menemukan produk pilihan, promo, rating, dan link affiliate langsung.",
+    "Landing page rekomendasi produk affiliate untuk menemukan produk pilihan, promo, rating, dan link belanja langsung.",
   canonicalUrl: "",
   openGraphImage: "",
   googleAnalyticsId: "",
@@ -21,7 +21,7 @@ const defaults: SiteContent = {
   googleSearchConsoleVerification: "",
   heroTitle: "Temukan Produk Pilihan dengan Harga Terbaik",
   heroSubtitle:
-    "Kami memilih produk berkualitas dari seller terpercaya di Shopee. Bandingkan promo, lihat rekomendasi, lalu checkout langsung lewat link affiliate.",
+    "Kami memilih produk berkualitas dari seller terpercaya. Bandingkan promo, lihat rekomendasi, lalu checkout langsung lewat link affiliate.",
   heroCta: "Lihat Produk",
   heroImage: "",
 };

@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   }
 
   return {
-    title: `${product.title} | Shopee Pilihan`,
+    title: `${product.title} | Etalase Pilihan`,
     description: product.description,
     openGraph: {
       title: product.title,

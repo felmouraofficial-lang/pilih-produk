@@ -24,13 +24,13 @@ export default function Image() {
         }}
       >
         <div style={{ color: "#FF6A00", fontSize: 28, fontWeight: 800 }}>
-          Affiliate Shopee Discovery
+          Affiliate Product Discovery
         </div>
         <div style={{ marginTop: 24, maxWidth: 880, fontSize: 78, fontWeight: 900, lineHeight: 0.96 }}>
-          Shopee Pilihan
+          Etalase Pilihan
         </div>
         <div style={{ marginTop: 24, maxWidth: 760, fontSize: 30, lineHeight: 1.35, color: "#d4d4d4" }}>
-          Rekomendasi produk premium, promo harian, dan link affiliate Shopee dalam satu landing page.
+          Rekomendasi produk pilihan, promo harian, dan link affiliate dalam satu landing page.
         </div>
       </div>
     ),
