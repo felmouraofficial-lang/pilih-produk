@@ -166,7 +166,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               rel="sponsored noopener noreferrer"
               className="flex h-[52px] items-center justify-center rounded-full bg-[#FF6A00] px-6 text-sm font-black text-white transition hover:bg-neutral-950"
             >
-              Lihat Produk
+              Beli Produk
             </a>
             <ShareProductButton
               slug={product.slug}
