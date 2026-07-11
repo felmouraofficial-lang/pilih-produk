@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "start": "next start",
+    "start": "prisma db push && node scripts/import-affiliate-products.js && next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
     "db:push": "prisma db push",
