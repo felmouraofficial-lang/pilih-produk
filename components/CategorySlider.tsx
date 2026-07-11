@@ -1,5 +1,7 @@
 "use client";
 
+import { trackCategorySelect } from "@/lib/analytics/events";
+
 type CategorySliderProps = {
   categories: string[];
   activeCategory: string;
@@ -23,7 +25,10 @@ export default function CategorySlider({
             return (
               <button
                 key={category}
-                onClick={() => onChange(category)}
+                onClick={() => {
+                  trackCategorySelect(category);
+                  onChange(category);
+                }}
                 className={`shrink-0 rounded-full px-5 py-3 text-sm font-extrabold transition ${
                   active
                     ? "bg-[#FF6A00] text-white shadow-[0_12px_28px_rgba(255,106,0,0.25)]"

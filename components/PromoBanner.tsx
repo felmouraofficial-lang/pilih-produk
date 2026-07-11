@@ -1,3 +1,6 @@
+"use client";
+
+import { trackPromotionSelect } from "@/lib/analytics/events";
 import type { Product } from "@/types/product";
 
 type PromoBannerProps = {
@@ -23,6 +26,7 @@ export default function PromoBanner({ product }: PromoBannerProps) {
           href={product.affiliateUrl}
           target="_blank"
           rel="sponsored noopener noreferrer"
+          onClick={() => trackPromotionSelect(product)}
           className="flex h-12 items-center justify-center rounded-full bg-[#FF6A00] px-7 text-sm font-black text-white transition hover:bg-white hover:text-neutral-950"
         >
           Ambil Promo

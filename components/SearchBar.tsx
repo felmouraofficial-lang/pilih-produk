@@ -1,5 +1,7 @@
 "use client";
 
+import { trackProductSearch } from "@/lib/analytics/events";
+
 type SearchBarProps = {
   value: string;
   onChange: (value: string) => void;
@@ -24,6 +26,10 @@ export default function SearchBar({ value, onChange, compact = false }: SearchBa
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") trackProductSearch(value);
+        }}
+        onBlur={() => trackProductSearch(value)}
         placeholder="Cari skincare, fashion, elektronik..."
         className={`w-full rounded-full border border-black/10 bg-white/90 pl-12 pr-4 text-sm font-medium text-neutral-900 shadow-sm outline-none transition focus:border-[#FF6A00] focus:ring-4 focus:ring-[#FF6A00]/10 ${
           compact ? "h-11" : "h-14"

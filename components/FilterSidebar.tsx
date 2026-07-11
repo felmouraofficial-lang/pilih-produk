@@ -1,5 +1,6 @@
 "use client";
 
+import { trackCategorySelect } from "@/lib/analytics/events";
 import type { ProductFilter } from "@/types/product";
 
 type FilterSidebarProps = {
@@ -40,7 +41,10 @@ export default function FilterSidebar({
         <span className="text-xs font-black uppercase text-neutral-500">Kategori</span>
         <select
           value={filters.category}
-          onChange={(event) => update("category", event.target.value)}
+          onChange={(event) => {
+            trackCategorySelect(event.target.value);
+            update("category", event.target.value);
+          }}
           className="mt-2 h-11 w-full rounded-[8px] border border-black/10 bg-white px-3 text-sm font-bold outline-none focus:border-[#FF6A00]"
         >
           {["Semua", ...categories].map((category) => (

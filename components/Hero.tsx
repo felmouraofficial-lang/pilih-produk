@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import SearchBar from "@/components/SearchBar";
+import { trackBuyClick } from "@/lib/analytics/events";
 import { formatCurrency } from "@/lib/format";
 import type { Product, SiteContent } from "@/types/product";
 
@@ -82,6 +83,7 @@ export default function Hero({ site, products, query, onQueryChange }: HeroProps
                 href={product.affiliateUrl}
                 target="_blank"
                 rel="sponsored noopener noreferrer"
+                onClick={() => trackBuyClick(product)}
                 className={`group grid grid-cols-[112px_1fr] items-center gap-4 rounded-[8px] bg-white p-3 shadow-[0_20px_60px_rgba(15,23,42,0.10)] transition hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(15,23,42,0.16)] ${
                   index % 2 === 1 ? "lg:translate-x-8" : ""
                 }`}

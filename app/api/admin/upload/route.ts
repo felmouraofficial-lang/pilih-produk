@@ -17,7 +17,7 @@ function unauthorized() {
 function getUploadDirectory() {
   return process.env.DATABASE_URL?.includes("/data/")
     ? path.join("/data", "uploads")
-    : path.join(process.cwd(), "public", "uploads");
+    : path.join(/*turbopackIgnore: true*/ process.cwd(), "public", "uploads");
 }
 
 export async function POST(request: NextRequest) {

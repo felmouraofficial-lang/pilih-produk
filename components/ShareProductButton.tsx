@@ -1,18 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import { trackProductShare } from "@/lib/analytics/events";
 
 type ShareProductButtonProps = {
   slug: string;
   title: string;
+  id?: string;
+  category?: string;
+  price?: number;
+  affiliateUrl?: string;
   className?: string;
 };
 
-export default function ShareProductButton({ slug, title, className }: ShareProductButtonProps) {
+export default function ShareProductButton({
+  slug,
+  title,
+  id,
+  category,
+  price,
+  affiliateUrl,
+  className,
+}: ShareProductButtonProps) {
   const [copied, setCopied] = useState(false);
 
   async function shareProduct() {
     const url = `${window.location.origin}/product/${slug}`;
+
+    trackProductShare({ id, slug, title, category, price, affiliateUrl });
 
     try {
       if (navigator.share) {

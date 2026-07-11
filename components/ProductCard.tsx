@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import TrackedBuyLink from "@/components/analytics/TrackedBuyLink";
 import { formatCurrency, formatSold } from "@/lib/format";
 import ShareProductButton from "@/components/ShareProductButton";
 import type { Product } from "@/types/product";
@@ -67,16 +68,19 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           <ShareProductButton
             slug={product.slug}
             title={product.title}
+            id={product.id}
+            category={product.category}
+            price={product.price}
+            affiliateUrl={product.affiliateUrl}
             className="flex h-11 items-center justify-center rounded-full bg-[#FFF3EA] px-3 text-sm font-extrabold text-[#D95700] transition hover:bg-[#FF6A00] hover:text-white"
           />
-          <a
+          <TrackedBuyLink
+            product={product}
             href={product.affiliateUrl}
-            target="_blank"
-            rel="sponsored noopener noreferrer"
             className="flex h-11 items-center justify-center rounded-full bg-neutral-950 px-3 text-sm font-extrabold text-white transition hover:bg-[#FF6A00] focus:outline-none focus:ring-4 focus:ring-[#FF6A00]/20"
           >
             Beli
-          </a>
+          </TrackedBuyLink>
         </div>
       </div>
     </article>

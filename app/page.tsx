@@ -1,6 +1,6 @@
 import Storefront from "@/components/Storefront";
 import { getCategories, getPublicProducts } from "@/lib/product-store";
-import { getSiteContent } from "@/services/site-service";
+import { getBaseUrl, getSiteContent } from "@/services/site-service";
 
 export const dynamic = "force-dynamic";
 
@@ -10,16 +10,25 @@ export default async function Home() {
     getCategories(),
   ]);
   const site = await getSiteContent();
+  const baseUrl = getBaseUrl(site);
   const siteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    url: baseUrl,
     name: site.websiteName,
     description: site.websiteDescription,
     potentialAction: {
       "@type": "SearchAction",
-      target: "/?q={search_term_string}",
+      target: `${baseUrl}/?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
+  };
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: site.websiteName,
+    url: baseUrl,
+    logo: site.logo ? `${baseUrl}${site.logo}` : undefined,
   };
   const productSchema = {
     "@context": "https://schema.org",
@@ -54,6 +63,10 @@ export default async function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
       <script
         type="application/ld+json"

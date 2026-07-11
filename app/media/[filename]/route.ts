@@ -14,10 +14,14 @@ const contentTypes = new Map([
 function getUploadDirectory() {
   return process.env.DATABASE_URL?.includes("/data/")
     ? path.join("/data", "uploads")
-    : path.join(process.cwd(), "public", "uploads");
+    : path.join(/*turbopackIgnore: true*/ process.cwd(), "public", "uploads");
 }
 
-export async function GET(_request: Request, context: RouteContext<"/media/[filename]">) {
+type MediaRouteContext = {
+  params: Promise<{ filename: string }>;
+};
+
+export async function GET(_request: Request, context: MediaRouteContext) {
   const { filename } = await context.params;
   const safeFilename = path.basename(filename);
 

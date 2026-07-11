@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductGrid from "@/components/ProductGrid";
 import ShareProductButton from "@/components/ShareProductButton";
+import TrackedBuyLink from "@/components/analytics/TrackedBuyLink";
 import { formatCurrency, formatSold } from "@/lib/format";
 import { getProductBySlug, getPublicProducts } from "@/lib/product-store";
+import { getBaseUrl, getSiteContent } from "@/services/site-service";
 
 export const dynamic = "force-dynamic";
 
@@ -48,16 +50,28 @@ function descriptionLines(description: string) {
 
 export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const [product, site] = await Promise.all([getProductBySlug(slug), getSiteContent()]);
 
   if (!product) {
     return { title: "Produk tidak ditemukan" };
   }
 
+  const baseUrl = getBaseUrl(site);
+  const productUrl = `${baseUrl}/product/${product.slug}`;
+
   return {
     title: `${product.title} | Etalase Pilihan`,
     description: product.description,
+    alternates: { canonical: productUrl },
     openGraph: {
+      title: product.title,
+      description: product.description,
+      url: productUrl,
+      type: "website",
+      images: [product.image],
+    },
+    twitter: {
+      card: "summary_large_image",
       title: product.title,
       description: product.description,
       images: [product.image],
@@ -67,9 +81,10 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const [product, products] = await Promise.all([
+  const [product, products, site] = await Promise.all([
     getProductBySlug(slug),
     getPublicProducts(),
+    getSiteContent(),
   ]);
 
   if (!product) notFound();
@@ -78,12 +93,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
     .filter((item) => item.id !== product.id && item.category === product.category)
     .slice(0, 4);
   const description = descriptionLines(product.description);
+  const baseUrl = getBaseUrl(site);
+  const productUrl = `${baseUrl}/product/${product.slug}`;
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.title,
     description: product.description,
     image: product.image,
+    url: productUrl,
     category: product.category,
     offers: {
       "@type": "Offer",
@@ -98,12 +116,30 @@ export default async function ProductPage({ params }: ProductPageProps) {
       reviewCount: product.sold,
     },
   };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Beranda", item: baseUrl },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: product.category,
+        item: `${baseUrl}/?category=${encodeURIComponent(product.category)}`,
+      },
+      { "@type": "ListItem", position: 3, name: product.title, item: productUrl },
+    ],
+  };
 
   return (
     <main className="min-h-screen bg-[#F6F6F6] text-neutral-950">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:gap-10 lg:px-8 lg:py-10">
         <div className="rounded-[8px] bg-white p-3 shadow-sm sm:p-4">
@@ -160,17 +196,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </p>
           </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,220px)_minmax(0,160px)]">
-            <a
+            <TrackedBuyLink
+              product={product}
               href={product.affiliateUrl}
-              target="_blank"
-              rel="sponsored noopener noreferrer"
               className="flex h-[52px] items-center justify-center rounded-full bg-[#FF6A00] px-6 text-sm font-black text-white transition hover:bg-neutral-950"
             >
               Beli Produk
-            </a>
+            </TrackedBuyLink>
             <ShareProductButton
               slug={product.slug}
               title={product.title}
+              id={product.id}
+              category={product.category}
+              price={product.price}
+              affiliateUrl={product.affiliateUrl}
               className="flex h-[52px] items-center justify-center rounded-full bg-white px-6 text-sm font-black text-neutral-950 shadow-sm ring-1 ring-black/10 transition hover:bg-neutral-950 hover:text-white"
             />
           </div>

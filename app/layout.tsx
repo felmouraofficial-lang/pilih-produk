@@ -1,8 +1,22 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import AnalyticsScripts from "@/components/analytics/AnalyticsScripts";
 import { getBaseUrl, getSiteContent } from "@/services/site-service";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
+
+const keywords = [
+  "etalase pilihan",
+  "produk affiliate",
+  "rekomendasi produk",
+  "promo produk",
+  "produk pilihan",
+  "belanja online",
+];
+
+export const viewport: Viewport = {
+  themeColor: "#FF6A00",
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteContent();
@@ -13,6 +27,11 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(baseUrl),
     title: site.metaTitle,
     description: site.metaDescription,
+    keywords,
+    applicationName: site.websiteName,
+    authors: [{ name: site.websiteName }],
+    creator: site.websiteName,
+    publisher: site.websiteName,
     verification: site.googleSearchConsoleVerification
       ? { google: site.googleSearchConsoleVerification }
       : undefined,
@@ -24,6 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: site.metaDescription,
       type: "website",
       locale: "id_ID",
+      url: baseUrl,
       siteName: site.websiteName,
       images: [{ url: ogImage, width: 1200, height: 630, alt: site.websiteName }],
     },
@@ -33,7 +53,17 @@ export async function generateMetadata(): Promise<Metadata> {
       description: site.metaDescription,
       images: [ogImage],
     },
-    robots: { index: true, follow: true },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
     icons: site.favicon ? { icon: site.favicon } : undefined,
   };
 }
@@ -46,32 +76,14 @@ export default function RootLayout({
   return <RootLayoutContent>{children}</RootLayoutContent>;
 }
 
-async function RootLayoutContent({ children }: { children: React.ReactNode }) {
-  const site = await getSiteContent();
-
+function RootLayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="id"
       className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col">
-        {site.googleAnalyticsId ? (
-          <>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.googleAnalyticsId}`} />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${site.googleAnalyticsId}');`,
-              }}
-            />
-          </>
-        ) : null}
-        {site.metaPixelId ? (
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${site.metaPixelId}');fbq('track','PageView');`,
-            }}
-          />
-        ) : null}
+        <AnalyticsScripts />
         {children}
       </body>
     </html>
