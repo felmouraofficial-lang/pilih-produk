@@ -70,19 +70,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[0.92fr_1fr] lg:px-8 lg:py-14">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-[8px] bg-neutral-100 shadow-sm">
+      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:gap-10 lg:px-8 lg:py-10">
+        <div className="rounded-[8px] bg-white p-3 shadow-sm sm:p-4">
+          <div className="relative aspect-square overflow-hidden rounded-[8px] bg-neutral-50">
           <Image
             src={product.image}
             alt={product.imageAlt || product.title}
             fill
             priority
-            sizes="(min-width: 1024px) 48vw, 100vw"
-            className="object-cover"
+            sizes="(min-width: 1024px) 42vw, 100vw"
+            className="object-contain p-2"
           />
+          </div>
         </div>
 
-        <div className="flex flex-col justify-center">
+        <div className="flex min-w-0 flex-col justify-center rounded-[8px] bg-white p-5 shadow-sm sm:p-7 lg:p-8">
           <Link href="/" className="text-sm font-black text-[#D95700]">
             Kembali ke katalog
           </Link>
@@ -96,36 +98,38 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </span>
             )}
           </div>
-          <h1 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">
+          <h1 className="mt-4 max-w-3xl text-3xl font-black leading-tight text-neutral-950 sm:text-4xl lg:text-5xl">
             {product.title}
           </h1>
-          <p className="mt-4 text-base leading-8 text-neutral-600">
+          <p className="mt-4 max-w-3xl text-base leading-7 text-neutral-600 sm:text-lg sm:leading-8">
             {product.description}
           </p>
-          <div className="mt-6">
-            <p className="text-base font-semibold text-neutral-400 line-through">
-              {formatCurrency(product.originalPrice)}
-            </p>
-            <p className="mt-1 text-4xl font-black text-neutral-950">
+          <div className="mt-6 rounded-[8px] bg-neutral-50 p-4">
+            {product.originalPrice > 0 && (
+              <p className="text-sm font-semibold text-neutral-400 line-through sm:text-base">
+                {formatCurrency(product.originalPrice)}
+              </p>
+            )}
+            <p className="mt-1 text-3xl font-black text-neutral-950 sm:text-4xl">
               {formatCurrency(product.price)}
             </p>
             <p className="mt-2 text-sm font-bold text-neutral-500">
               Rating {product.rating.toFixed(1)} / {formatSold(product.sold)} terjual
             </p>
           </div>
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,220px)_minmax(0,160px)]">
             <a
               href={product.affiliateUrl}
               target="_blank"
               rel="sponsored noopener noreferrer"
-              className="flex h-14 w-full items-center justify-center rounded-full bg-[#FF6A00] px-6 text-sm font-black text-white transition hover:bg-neutral-950 sm:w-fit"
+              className="flex h-[52px] items-center justify-center rounded-full bg-[#FF6A00] px-6 text-sm font-black text-white transition hover:bg-neutral-950"
             >
               Lihat Produk
             </a>
             <ShareProductButton
               slug={product.slug}
               title={product.title}
-              className="flex h-14 w-full items-center justify-center rounded-full bg-white px-6 text-sm font-black text-neutral-950 shadow-sm transition hover:bg-neutral-950 hover:text-white sm:w-fit"
+              className="flex h-[52px] items-center justify-center rounded-full bg-white px-6 text-sm font-black text-neutral-950 shadow-sm ring-1 ring-black/10 transition hover:bg-neutral-950 hover:text-white"
             />
           </div>
         </div>
