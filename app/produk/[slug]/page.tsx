@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductGrid from "@/components/ProductGrid";
+import ShareProductButton from "@/components/ShareProductButton";
 import { formatCurrency, formatSold } from "@/lib/format";
 import { getProductBySlug, getPublicProducts } from "@/lib/product-store";
 
@@ -112,14 +113,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
               Rating {product.rating.toFixed(1)} / {formatSold(product.sold)} terjual
             </p>
           </div>
-          <a
-            href={product.affiliateUrl}
-            target="_blank"
-            rel="sponsored noopener noreferrer"
-            className="mt-7 flex h-14 w-full items-center justify-center rounded-full bg-[#FF6A00] px-6 text-sm font-black text-white transition hover:bg-neutral-950 sm:w-fit"
-          >
-            Lihat Produk
-          </a>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <a
+              href={product.affiliateUrl}
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              className="flex h-14 w-full items-center justify-center rounded-full bg-[#FF6A00] px-6 text-sm font-black text-white transition hover:bg-neutral-950 sm:w-fit"
+            >
+              Lihat Produk
+            </a>
+            <ShareProductButton
+              slug={product.slug}
+              title={product.title}
+              className="flex h-14 w-full items-center justify-center rounded-full bg-white px-6 text-sm font-black text-neutral-950 shadow-sm transition hover:bg-neutral-950 hover:text-white sm:w-fit"
+            />
+          </div>
         </div>
       </section>
 

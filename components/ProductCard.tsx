@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatCurrency, formatSold } from "@/lib/format";
+import ShareProductButton from "@/components/ShareProductButton";
 import type { Product } from "@/types/product";
 
 type ProductCardProps = {
@@ -11,7 +12,7 @@ type ProductCardProps = {
 export default function ProductCard({ product, priority = false }: ProductCardProps) {
   return (
     <article className="group overflow-hidden rounded-[8px] bg-white shadow-[0_1px_0_rgba(0,0,0,0.08),0_14px_40px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_60px_rgba(15,23,42,0.14)]">
-      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
+      <Link href={`/product/${product.slug}`} className="relative block aspect-[4/3] overflow-hidden bg-neutral-100">
         <Image
           src={product.image}
           alt={product.imageAlt || product.title}
@@ -26,7 +27,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         <div className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-neutral-800 shadow-sm">
           {product.category}
         </div>
-      </div>
+      </Link>
 
       <div className="p-4">
         <div className="flex items-center justify-between gap-3 text-xs font-bold text-neutral-500">
@@ -62,14 +63,21 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           </div>
         </div>
 
-        <a
-          href={product.affiliateUrl}
-          target="_blank"
-          rel="sponsored noopener noreferrer"
-          className="mt-4 flex h-11 items-center justify-center rounded-full bg-neutral-950 px-4 text-sm font-extrabold text-white transition hover:bg-[#FF6A00] focus:outline-none focus:ring-4 focus:ring-[#FF6A00]/20"
-        >
-          Lihat Produk
-        </a>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <ShareProductButton
+            slug={product.slug}
+            title={product.title}
+            className="flex h-11 items-center justify-center rounded-full bg-[#FFF3EA] px-3 text-sm font-extrabold text-[#D95700] transition hover:bg-[#FF6A00] hover:text-white"
+          />
+          <a
+            href={product.affiliateUrl}
+            target="_blank"
+            rel="sponsored noopener noreferrer"
+            className="flex h-11 items-center justify-center rounded-full bg-neutral-950 px-3 text-sm font-extrabold text-white transition hover:bg-[#FF6A00] focus:outline-none focus:ring-4 focus:ring-[#FF6A00]/20"
+          >
+            Beli
+          </a>
+        </div>
       </div>
     </article>
   );
