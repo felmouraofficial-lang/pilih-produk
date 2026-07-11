@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  description   String
+  image         String
+  imageAlt      String
+  price         Int
+  originalPrice Int
+  badge         String
+  discount      String
+  rating        Float
+  sold          Int
+  affiliateUrl  String
+  tagsJson      String   @default("[]")
+  isPromo       Boolean  @default(false)
+  isFlashSale   Boolean  @default(false)
+  isBestSeller  Boolean  @default(false)
+  published     Boolean  @default(false)
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([published])
+  @@index([categoryId])
+  @@index([createdAt])
+  @@index([rating])
+  @@index([sold])
+}
+
+model SiteContent {
+  id                              String   @id @default("site")
+  websiteName                     String   @default("Shopee Pilihan")
+  websiteDescription              String   @default("Website rekomendasi produk affiliate Shopee dengan kurasi promo dan produk pilihan.")
+  logo                            String   @default("")
+  favicon                         String   @default("")
+  footerText                      String   @default("Harga, stok, voucher, dan promo mengikuti informasi terbaru di halaman Shopee tujuan.")
+  metaTitle                       String   @default("Shopee Pilihan | Rekomendasi Produk Premium dan Promo Shopee")
+  metaDescription                 String   @default("Landing page rekomendasi produk affiliate Shopee untuk menemukan produk pilihan, promo, rating, dan link affiliate langsung.")
+  canonicalUrl                    String   @default("")
+  openGraphImage                  String   @default("")
+  googleAnalyticsId               String   @default("")
+  metaPixelId                     String   @default("")
+  googleSearchConsoleVerification String   @default("")
+  heroTitle                       String   @default("Temukan Produk Pilihan dengan Harga Terbaik")
+  heroSubtitle                    String   @default("Kami memilih produk berkualitas dari seller terpercaya di Shopee. Bandingkan promo, lihat rekomendasi, lalu checkout langsung lewat link affiliate.")
+  heroCta                         String   @default("Lihat Produk")
+  heroImage                       String   @default("")
+  createdAt                       DateTime @default(now())
+  updatedAt                       DateTime @updatedAt
+}

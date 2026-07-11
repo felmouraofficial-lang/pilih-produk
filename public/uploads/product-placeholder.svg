@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder produk</title>
+  <desc id="desc">Gambar sementara untuk produk baru yang belum diedit.</desc>
+  <rect width="1200" height="900" fill="#f6f6f6"/>
+  <rect x="120" y="100" width="960" height="700" rx="24" fill="#ffffff" stroke="#e7e7e7" stroke-width="4"/>
+  <path d="M438 344h324l-38 218H476l-38-218Z" fill="#ff6a00" opacity=".94"/>
+  <path d="M508 344c0-72 42-118 92-118s92 46 92 118" fill="none" stroke="#102034" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="515" cy="628" r="34" fill="#102034"/>
+  <circle cx="685" cy="628" r="34" fill="#102034"/>
+  <text x="600" y="735" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="800" fill="#102034">Produk Baru</text>
+  <text x="600" y="790" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#757575">Edit foto dan detail dari Dashboard Admin</text>
+</svg>
