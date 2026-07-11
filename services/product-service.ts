@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/lib/generated/prisma/client";
+import { ensureAffiliateProductsSeeded } from "@/services/affiliate-seed";
 import type {
   AdminDashboard,
   AdminProductFilter,
@@ -107,6 +108,8 @@ function productData(input: ProductFormInput, categoryId: string, slug: string) 
 }
 
 export async function getCategories() {
+  await ensureAffiliateProductsSeeded();
+
   const categories = await prisma.category.findMany({
     orderBy: { name: "asc" },
   });
@@ -115,6 +118,8 @@ export async function getCategories() {
 }
 
 export async function getPublicProducts() {
+  await ensureAffiliateProductsSeeded();
+
   const products = await prisma.product.findMany({
     where: { published: true },
     include: productInclude,
@@ -125,6 +130,8 @@ export async function getPublicProducts() {
 }
 
 export async function getProductBySlug(slug: string) {
+  await ensureAffiliateProductsSeeded();
+
   const product = await prisma.product.findFirst({
     where: { slug, published: true },
     include: productInclude,
@@ -134,6 +141,8 @@ export async function getProductBySlug(slug: string) {
 }
 
 export async function listAdminProducts(filters: AdminProductFilter = {}) {
+  await ensureAffiliateProductsSeeded();
+
   const page = Math.max(1, Number(filters.page) || 1);
   const pageSize = Math.min(50, Math.max(1, Number(filters.pageSize) || 20));
   const query = filters.query?.trim();
@@ -210,6 +219,8 @@ export async function listAdminProducts(filters: AdminProductFilter = {}) {
 }
 
 export async function getAdminDashboard(): Promise<AdminDashboard> {
+  await ensureAffiliateProductsSeeded();
+
   const [
     totalProducts,
     publishedProducts,
