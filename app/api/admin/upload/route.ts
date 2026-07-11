@@ -14,6 +14,12 @@ function unauthorized() {
   return NextResponse.json({ message: "Akses admin diperlukan." }, { status: 401 });
 }
 
+function getUploadDirectory() {
+  return process.env.DATABASE_URL?.includes("/data/")
+    ? path.join("/data", "uploads")
+    : path.join(process.cwd(), "public", "uploads");
+}
+
 export async function POST(request: NextRequest) {
   if (!isAdminRequest(request)) return unauthorized();
 
@@ -39,12 +45,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const uploadDirectory = path.join(process.cwd(), "public", "uploads");
+  const uploadDirectory = getUploadDirectory();
   const filename = `${randomUUID()}.${extension}`;
   const bytes = Buffer.from(await file.arrayBuffer());
 
   await mkdir(uploadDirectory, { recursive: true });
   await writeFile(path.join(uploadDirectory, filename), bytes);
 
-  return NextResponse.json({ url: `/uploads/${filename}` });
+  return NextResponse.json({ url: `/media/${filename}` });
 }
