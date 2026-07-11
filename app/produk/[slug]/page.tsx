@@ -12,6 +12,40 @@ type ProductPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+function descriptionLines(description: string) {
+  const manualLines = description
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (manualLines.length > 1) return manualLines;
+
+  const sentences = description
+    .split(/(?<=[.!?])\s+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (sentences.length > 1) return sentences;
+
+  const words = description.trim().split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let currentLine = "";
+
+  for (const word of words) {
+    const nextLine = currentLine ? `${currentLine} ${word}` : word;
+
+    if (nextLine.length > 72 && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = nextLine;
+    }
+  }
+
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
 export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
@@ -43,6 +77,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const related = products
     .filter((item) => item.id !== product.id && item.category === product.category)
     .slice(0, 4);
+  const description = descriptionLines(product.description);
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -101,9 +136,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <h1 className="mt-4 max-w-3xl text-3xl font-black leading-tight text-neutral-950 sm:text-4xl lg:text-5xl">
             {product.title}
           </h1>
-          <p className="mt-4 max-w-3xl text-base leading-7 text-neutral-600 sm:text-lg sm:leading-8">
-            {product.description}
-          </p>
+          <div className="mt-5 max-w-3xl rounded-[8px] border border-black/5 bg-neutral-50 p-4">
+            <h2 className="text-sm font-black uppercase text-neutral-500">
+              Deskripsi Produk
+            </h2>
+            <div className="mt-3 space-y-2 text-base leading-7 text-neutral-700 sm:text-lg sm:leading-8">
+              {description.map((line, index) => (
+                <p key={`${line}-${index}`}>{line}</p>
+              ))}
+            </div>
+          </div>
           <div className="mt-6 rounded-[8px] bg-neutral-50 p-4">
             {product.originalPrice > 0 && (
               <p className="text-sm font-semibold text-neutral-400 line-through sm:text-base">
